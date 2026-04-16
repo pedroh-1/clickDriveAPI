@@ -47,10 +47,11 @@ public class UsuarioController {
 
 
     }
-    //Endpoint para deletar usuario
-    @DeleteMapping
+    @DeleteMapping("/{id}") // Adicione o /{id} aqui!
     public ResponseEntity<Void> deletarUsuario(@PathVariable Long id) {
         usuarioService.deletar(id);
-        return ResponseEntity.noContent().build(); // Retorna 204 No Content
+        return ResponseEntity.noContent().build();
     }
+
+
 }
