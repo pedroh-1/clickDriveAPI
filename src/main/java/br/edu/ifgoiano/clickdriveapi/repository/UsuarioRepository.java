@@ -1,4 +1,10 @@
 package br.edu.ifgoiano.clickdriveapi.repository;
 
-public class UsuarioRepository {
+import br.edu.ifgoiano.clickdriveapi.model.UsuarioModel;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface UsuarioRepository extends JpaRepository<UsuarioModel, Long> {
+
 }
