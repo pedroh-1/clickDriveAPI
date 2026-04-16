@@ -13,7 +13,7 @@ public class UsuarioService {
     //injeção de dependencia do repositorio
     private final UsuarioRepository usuarioRepository;
 
-    public UsuarioRepository(UsuarioRepository usuarioRepository){
+    public UsuarioService(UsuarioRepository usuarioRepository){
         this.usuarioRepository = usuarioRepository;
     }
 
