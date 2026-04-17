@@ -14,10 +14,10 @@ public class UsuarioModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    String nome;
-    String email;
-    String senha;
-    String telefone;
+    private String nome;
+    private String email;
+    private String senha;
+    private String telefone;
 
     public UsuarioModel(Long id, String nome, String email, String senha, String telefone) {
         this.id = id;
