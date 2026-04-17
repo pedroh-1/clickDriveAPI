@@ -40,4 +40,28 @@ public class UsuarioService {
     public void deletar(Long id) {
         usuarioRepository.deleteById(id);
     }
+    //Metodo para atualizar o Usuario existente
+
+    public UsuarioModel update(Long id, UsuarioModel usuarioAtualizado){
+
+        //busca no banco de dados ou lança uma exceção se não achar
+        UsuarioModel existente = usuarioRepository.findById(id).orElseThrow(()->new RuntimeException("usuario não encontrado"));
+
+
+
+        //Atualizar os dados
+
+        existente.setNome(usuarioAtualizado.getNome());
+        existente.setEmail(usuarioAtualizado.getEmail());
+        existente.setSenha(usuarioAtualizado.getSenha());
+        existente.setTelefone(usuarioAtualizado.getTelefone());
+
+        //salva por cima do banco
+        return usuarioRepository.save(existente);
+
+
+
+    }
+
+
 }

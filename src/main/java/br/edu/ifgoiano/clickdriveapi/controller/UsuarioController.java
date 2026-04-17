@@ -53,6 +53,11 @@ public class UsuarioController {
         return ResponseEntity.noContent().build();
     }
 
+    @PutMapping("/{id}")
+    public UsuarioModel atualizarUsuario(@PathVariable Long id, @RequestBody UsuarioModel usuarioModel){
+        usuarioModel.setId(id);
+        return usuarioService.salvar(usuarioModel);
+    }
 
 
 }
