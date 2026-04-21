@@ -1,4 +1,4 @@
-package br.edu.ifgoiano.clickdriveapi.config;
+/*package br.edu.ifgoiano.clickdriveapi.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,4 +18,4 @@ public class SecurityConfig {
 
         return http.build();
     }
-}
+}*/
