@@ -1,8 +1,5 @@
 package br.edu.ifgoiano.clickdriveapi.service;
 
-
-
-import br.edu.ifgoiano.clickdriveapi.model.AlunoModel;
 import br.edu.ifgoiano.clickdriveapi.model.InstrutorModel;
 import br.edu.ifgoiano.clickdriveapi.repository.InstrutorRepository;
 import org.springframework.stereotype.Service;
@@ -16,45 +13,43 @@ public class InstrutorService {
     private final InstrutorRepository instrutorRepository;
 
     public InstrutorService(InstrutorRepository instrutorRepository){
-        this.instrutorRepository= instrutorRepository;
-
+        this.instrutorRepository = instrutorRepository;
     }
+
     public InstrutorModel salvar(InstrutorModel instrutor){
         return instrutorRepository.save(instrutor);
-
     }
 
-    public List<InstrutorModel>listaTodos(){
+    public List<InstrutorModel> listaTodos(){
         return instrutorRepository.findAll();
-
     }
 
-    public Optional<InstrutorModel> bucarPorId(Long id){
+    public Optional<InstrutorModel> buscarPorId(Long id){
         return instrutorRepository.findById(id);
-
-
     }
+
     public void deletar(Long id){
         instrutorRepository.deleteById(id);
     }
 
-    /*
-    public InstrutorModel update( Long id, InstrutorModel instrutorAtualizado){
+    public InstrutorModel update(Long id, InstrutorModel instrutorAtualizado) {
+        // 1. Busca o instrutor existente no banco pelo ID
+        InstrutorModel existente = instrutorRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Instrutor não encontrado"));
 
-        InstrutorModel  existente = InstrutorRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Aluno não encontrado"));
+        // 2. Atualiza os dados que vêm do UsuarioModel (Herança)
+        existente.setNome(instrutorAtualizado.getNome());
+        existente.setEmail(instrutorAtualizado.getEmail());
+        existente.setTelefone(instrutorAtualizado.getTelefone());
+        existente.setSenha(instrutorAtualizado.getSenha());
 
-        existente.setCpf(instrutorAtualizado.getCpf());
-        existente.setDataNascimento(instrutorAtualizado.getDataNascimento());
-        existente.setCategoriaPretendida(instrutorAtualizado.getCategoriaPretendida());
+        // 3. Atualiza os dados específicos do InstrutorModel
+        existente.setCredenciamentoDetran(instrutorAtualizado.getCredenciamentoDetran());
+        existente.setCategoria(instrutorAtualizado.getCategoria());
+        existente.setValorHora(instrutorAtualizado.getValorHora());
+        existente.setAprovado(instrutorAtualizado.getAprovado());
 
-        return alunoRepository.save(existente);
+        // 4. Salva as alterações
+        return instrutorRepository.save(existente);
     }
-*/
-
-
-
-
 }
-
-

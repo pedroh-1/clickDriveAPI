@@ -8,7 +8,7 @@ public class InstrutorModel extends UsuarioModel {
     private String credenciamentoDetran;
     private String categoria;
     private Double valorHora;
-    private Boolean aprovado;
+    private Boolean aprovado = false;
 
     public InstrutorModel(Long id, String nome, String email, String senha, String telefone, String credenciamentoDetran, Double valorHora, String categoria, Boolean aprovado) {
         super(id, nome, email, senha, telefone);
@@ -52,4 +52,6 @@ public class InstrutorModel extends UsuarioModel {
     public void setValorHora(Double valorHora) {
         this.valorHora = valorHora;
     }
+
+
 }
