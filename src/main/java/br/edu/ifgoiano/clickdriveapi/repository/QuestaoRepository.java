@@ -1,5 +1,6 @@
 package br.edu.ifgoiano.clickdriveapi.repository;
 
+import br.edu.ifgoiano.clickdriveapi.model.InstrutorModel;
 import br.edu.ifgoiano.clickdriveapi.model.QuestaoModel;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
@@ -7,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.FluentQuery;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
@@ -164,5 +166,9 @@ public interface QuestaoRepository extends JpaRepository<QuestaoModel, Long> {
     @Override
     default <S extends QuestaoModel, R> R findBy(Example<S> example, Function<FluentQuery.FetchableFluentQuery<S>, R> queryFunction) {
         return null;
+    }
+
+    @Repository
+    interface InstrutorRepository extends JpaRepository<InstrutorModel, Long> {
     }
 }
