@@ -1,7 +1,9 @@
 package br.edu.ifgoiano.clickdriveapi.model;
+import jakarta.persistence.Entity;
 
 import java.time.LocalDate;
 
+@Entity
 public class AlunoModel extends UsuarioModel {
 
     private String cpf;
@@ -16,6 +18,10 @@ public class AlunoModel extends UsuarioModel {
         CategoriaPretendida = categoriaPretendida;
         this.cidade = cidade;
         this.dataNascimento = dataNascimento;
+    }
+
+    // Construtor padrão (sem argumentos) - OBRIGATÓRIO
+    public AlunoModel() {
     }
 
     public String getCpf() {
