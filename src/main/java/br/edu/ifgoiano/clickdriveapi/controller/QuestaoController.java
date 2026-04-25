@@ -20,8 +20,6 @@ public class QuestaoController {
     @PostMapping
     public ResponseEntity<QuestaoModel> criarQuestao(@RequestBody QuestaoModel novaQuestao) {
 
-        // Esse é o nosso X9. Ele VAI ter que imprimir no terminal do IntelliJ!
-        System.out.println("\n--- CHEGOU NO CONTROLLER! ---");
         System.out.println("Enunciado recebido: " + novaQuestao.getEnunciado());
 
         QuestaoModel questaoSalva = questaoService.salvarQuestao(novaQuestao);
