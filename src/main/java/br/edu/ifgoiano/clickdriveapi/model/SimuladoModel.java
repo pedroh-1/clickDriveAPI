@@ -1,22 +1,41 @@
 package br.edu.ifgoiano.clickdriveapi.model;
 
-import java.time.LocalDateTime;
+import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+
+@Entity
+@Table(name = "tb_simulado")
 public class SimuladoModel {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private LocalDateTime dataRealisacao;
+
+
+    private LocalDateTime dataRealizacao;
     private Integer pontuacao;
     private Boolean aprovado;
 
+    @Column(name = "aluno_id")
+    private Long alunoId;
+
+    @ManyToMany
+    @JoinTable(
+            name = "tb_simulado_questao", // Nome da tabela que vai nascer no banco
+            joinColumns = @JoinColumn(name = "simulado_id"),
+            inverseJoinColumns = @JoinColumn(name = "questao_id")
+    )
+    private List<QuestaoModel> questoes = new ArrayList<>();
+
+
+
+
     public SimuladoModel() {}
 
-    public SimuladoModel(Long id, LocalDateTime dataRealisacao, Integer pontuacao,  Boolean aprovado) {
-        this.id = id;
-        this.dataRealisacao = dataRealisacao;
-        this.pontuacao = pontuacao;
-        this.aprovado = aprovado;
-    }
 
     public Long getId() {
         return id;
@@ -26,12 +45,12 @@ public class SimuladoModel {
         this.id = id;
     }
 
-    public LocalDateTime getDataRealisacao() {
-        return dataRealisacao;
+    public LocalDateTime getDataRealizacao() {
+        return dataRealizacao;
     }
 
-    public void setDataRealisacao(LocalDateTime dataRealisacao) {
-        this.dataRealisacao = dataRealisacao;
+    public void setDataRealizacao(LocalDateTime dataRealisacao) {
+        this.dataRealizacao = dataRealisacao;
     }
 
     public Integer getPontuacao() {
@@ -48,5 +67,21 @@ public class SimuladoModel {
 
     public void setAprovado(Boolean aprovado) {
         this.aprovado = aprovado;
+    }
+
+    public Long getAlunoId() {
+        return alunoId;
+    }
+
+    public void setAlunoId(Long alunoId) {
+        this.alunoId = alunoId;
+    }
+
+    public List<QuestaoModel> getQuestoes() {
+        return questoes;
+    }
+
+    public void setQuestoes(List<QuestaoModel> questoes) {
+        this.questoes = questoes;
     }
 }
