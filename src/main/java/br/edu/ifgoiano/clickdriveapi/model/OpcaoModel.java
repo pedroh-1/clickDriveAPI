@@ -1,6 +1,7 @@
 package br.edu.ifgoiano.clickdriveapi.model;
 import br.edu.ifgoiano.clickdriveapi.model.QuestaoModel;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -17,7 +18,7 @@ public class OpcaoModel {
     @Column(nullable = false)
     private Boolean correta;
 
-
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "questao_id", nullable = false)
     private QuestaoModel questao;

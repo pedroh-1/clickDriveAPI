@@ -18,15 +18,16 @@ public class QuestaoService {
     public QuestaoModel salvarQuestao(QuestaoModel questao) {
         if (questao.getOpcoes() != null) {
             questao.getOpcoes().forEach(opcao -> opcao.setQuestao(questao));
-        }
 
+            long opcoesCorretas = questao.getOpcoes().stream()
+                    .filter(opcao -> opcao.getCorreta() != null && opcao.getCorreta())
+                    .count();
 
-        long opcoesCorretas = questao.getOpcoes().stream()
-                .filter(opcao -> opcao.getCorreta() != null && opcao.getCorreta())
-                .count();
-
-        if (opcoesCorretas != 1) {
-            throw new IllegalArgumentException("A questão deve ter exatamente UMA opção correta.");
+            if (opcoesCorretas != 1) {
+                throw new IllegalArgumentException("A questão deve ter exatamente UMA opção correta.");
+            }
+        } else {
+             throw new IllegalArgumentException("A questão deve ter pelo menos uma opção, e exatamente uma delas deve ser correta.");
         }
 
         return questaoRepository.save(questao);
@@ -45,7 +46,7 @@ public class QuestaoService {
     }
 
     @Transactional
-    public void detelarQuestao(Long id) {
+    public void deletarQuestao(Long id) {
         questaoRepository.deleteById(id);
     }
 
