@@ -6,9 +6,8 @@ package br.edu.ifgoiano.clickdriveapi.model;
  */
 public enum StatusAulaModel {
 
-    AGENDADA,      // Aula marcada, aguardando a data
-    CONCLUIDA,     // Aula realizada com sucesso
-    CANCELADA,     // Aula desmarcada
-    ALUNO_AUSENTE, // O aluno não compareceu
-    INSTRUTOR_AUSENTE // O instrutor não compareceu
+    SOLICITADA,      // Aula marcada, aguardando a data
+    CONFIRMADA,     // Aula realizada com sucesso
+    CONCLUIDA,     // Aula desmarcada
+    CANCELADA, // O aluno não compareceu
 }
