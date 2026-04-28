@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 
 
 @Entity
-@Table(name = "tb_usuario")
 public class UsuarioModel {
 
     @Id
