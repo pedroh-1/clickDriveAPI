@@ -8,6 +8,7 @@ import br.edu.ifgoiano.clickdriveapi.repository.InstrutorRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CandidaturaService {
@@ -56,4 +57,13 @@ public class CandidaturaService {
     public void deletar(Long id) {
         candidaturaRepository.deleteById(id);
     }
+
+    // O retorno deve ser List<CandidaturaModel> e não InstrutorModel
+    public List<CandidaturaModel> findByStatus(StatusCandidatura status) {
+        // Você deve usar o repositório de Candidatura para filtrar
+        return candidaturaRepository.findByStatus(status);
+    }
+
+
+   
 }

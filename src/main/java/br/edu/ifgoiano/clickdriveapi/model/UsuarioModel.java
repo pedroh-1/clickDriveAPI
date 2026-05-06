@@ -3,7 +3,6 @@ package br.edu.ifgoiano.clickdriveapi.model;
 
 import jakarta.persistence.*;
 
-
 @Entity
 public class UsuarioModel {
 
