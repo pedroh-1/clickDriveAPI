@@ -39,6 +39,7 @@ public class PagamentoController {
         }
     }
 
+
     // --- LISTAR TODOS ---
     @GetMapping
     public ResponseEntity<List<PagamentoModel>> listarTodos() {
