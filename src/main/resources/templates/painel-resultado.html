@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Resultado do Simulado</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light d-flex align-items-center justify-content-center" style="height: 100vh;">
+
+<div class="container text-center">
+  <div class="card shadow-lg p-5">
+    <h1>Resultado Final</h1>
+
+    <h3 class="mt-4">Sua Nota:
+      <span class="text-primary fw-bold" th:text="${simulado.pontuacao}">0</span>
+      de <span th:text="${totalQuestoes}">0</span>
+    </h3>
+
+    <div th:if="${simulado.aprovado}" class="alert alert-success mt-4 fs-4">
+      🎉 Parabéns! Você foi APROVADO!
+    </div>
+    <div th:unless="${simulado.aprovado}" class="alert alert-danger mt-4 fs-4">
+      ❌ Que pena. Você foi REPROVADO. Estude mais e tente novamente!
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>
