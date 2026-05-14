@@ -18,10 +18,10 @@ public class InstrutorController {
         this.instrutorService = instrutorService;
     }
 
-    @PostMapping
+    /*@PostMapping
     public ResponseEntity<InstrutorModel> criarInstrutor(@RequestBody InstrutorModel instrutor){
         return new ResponseEntity<>(instrutorService.salvar(instrutor), HttpStatus.CREATED);
-    }
+    }*/
 
     @GetMapping
     public ResponseEntity<List<InstrutorModel>> buscarTodosInstrutores(){
@@ -41,9 +41,10 @@ public class InstrutorController {
         return ResponseEntity.ok(instrutorService.update(id, instrutorAtualizado));
     }
 
+    /*
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteInstrutor(@PathVariable Long id){
         instrutorService.deletar(id);
         return ResponseEntity.noContent().build();
-    }
+    }*/
 }
