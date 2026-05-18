@@ -5,10 +5,13 @@ import br.edu.ifgoiano.clickdriveapi.model.DicaModel;
 import br.edu.ifgoiano.clickdriveapi.repository.CategoriaDicaRepository;
 import br.edu.ifgoiano.clickdriveapi.repository.DicaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
+@Service
 public class DicaService {
 
     @Autowired
@@ -29,10 +32,10 @@ public class DicaService {
         }
 
 
-        categoriaDicaRepository.findById(dica.getCategoriaDica().getId())
+        CategoriaDicaModel categoria = categoriaDicaRepository.findById(dica.getCategoriaDica().getId())
                 .orElseThrow(() -> new IllegalArgumentException("Categoria não encontrada."));
 
-
+        dica.setCategoriaDica(categoria);
         dica.setDataPublicacao(LocalDateTime.now());
 
         return dicaRepository.save(dica);
@@ -41,5 +44,13 @@ public class DicaService {
     // Listar todas as Dicas
     public List<DicaModel> listarTodas() {
         return dicaRepository.findAll();
+    }
+
+    public Optional<DicaModel> buscarPorId(Long id) {
+        return dicaRepository.findById(id);
+    }
+
+    public List<DicaModel> listarPorCategoria(Long categoriaId) {
+        return dicaRepository.buscarDicasPorCategoria(categoriaId);
     }
 }

@@ -1,7 +1,9 @@
 package br.edu.ifgoiano.clickdriveapi.controller;
 
 
-import br.edu.ifgoiano.clickdriveapi.model.AvaliacaoModel;
+import br.edu.ifgoiano.clickdriveapi.dto.AvaliacaoRequestDTO;
+import br.edu.ifgoiano.clickdriveapi.dto.AvaliacaoResponseDTO;
+import br.edu.ifgoiano.clickdriveapi.mapper.AvaliacaoMapper;
 import br.edu.ifgoiano.clickdriveapi.service.AvaliacaoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,12 +17,15 @@ public class AvaliacaoController {
     @Autowired
     private AvaliacaoService avaliacaoService;
 
+    @Autowired
+    private AvaliacaoMapper avaliacaoMapper;
+
     // --- CRIAR NOVA AVALIAÇÃO ---
     @PostMapping
-    public ResponseEntity<?> criarAvaliacao(@RequestBody AvaliacaoModel avaliacao) {
+    public ResponseEntity<?> criarAvaliacao(@RequestBody AvaliacaoRequestDTO avaliacao) {
         try {
-            AvaliacaoModel novaAvaliacao = avaliacaoService.salvarAvaliacao(avaliacao);
-            return ResponseEntity.status(HttpStatus.CREATED).body(novaAvaliacao);
+            var novaAvaliacao = avaliacaoService.salvarAvaliacao(avaliacaoMapper.toEntity(avaliacao));
+            return ResponseEntity.status(HttpStatus.CREATED).body(avaliacaoMapper.toResponseDTO(novaAvaliacao));
         } catch (IllegalArgumentException | IllegalStateException e) {
             // Se cair em alguma das regras de negócio, devolve o erro limpo pro usuário
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -29,10 +34,10 @@ public class AvaliacaoController {
 
     // --- VER AVALIAÇÃO DE UMA AULA ESPECÍFICA ---
     @GetMapping("/aula/{aulaId}")
-    public ResponseEntity<AvaliacaoModel> buscarPorAula(@PathVariable Long aulaId) {
-        AvaliacaoModel avaliacao = avaliacaoService.buscarPorAula(aulaId);
+    public ResponseEntity<AvaliacaoResponseDTO> buscarPorAula(@PathVariable Long aulaId) {
+        var avaliacao = avaliacaoService.buscarPorAula(aulaId);
         if (avaliacao != null) {
-            return ResponseEntity.ok(avaliacao);
+            return ResponseEntity.ok(avaliacaoMapper.toResponseDTO(avaliacao));
         }
         return ResponseEntity.notFound().build();
     }

@@ -1,6 +1,8 @@
 package br.edu.ifgoiano.clickdriveapi.controller;
 
-import br.edu.ifgoiano.clickdriveapi.model.QuestaoModel;
+import br.edu.ifgoiano.clickdriveapi.dto.QuestaoRequestDTO;
+import br.edu.ifgoiano.clickdriveapi.dto.QuestaoResponseDTO;
+import br.edu.ifgoiano.clickdriveapi.mapper.QuestaoMapper;
 import br.edu.ifgoiano.clickdriveapi.service.QuestaoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,23 +19,29 @@ public class QuestaoController {
     @Autowired
     private QuestaoService questaoService;
 
+    @Autowired
+    private QuestaoMapper questaoMapper;
+
     @PostMapping
-    public ResponseEntity<QuestaoModel> criarQuestao(@RequestBody QuestaoModel novaQuestao) {
+    public ResponseEntity<QuestaoResponseDTO> criarQuestao(@RequestBody QuestaoRequestDTO novaQuestao) {
 
-        System.out.println("Enunciado recebido: " + novaQuestao.getEnunciado());
+        System.out.println("Enunciado recebido: " + novaQuestao.enunciado());
 
-        QuestaoModel questaoSalva = questaoService.salvarQuestao(novaQuestao);
-        return ResponseEntity.status(HttpStatus.CREATED).body(questaoSalva);
+        var questaoSalva = questaoService.salvarQuestao(questaoMapper.toEntity(novaQuestao));
+        return ResponseEntity.status(HttpStatus.CREATED).body(questaoMapper.toResponseDTO(questaoSalva));
     }
 
     @GetMapping
-    public ResponseEntity<List<QuestaoModel>> listarTodas() {
-        return ResponseEntity.ok(questaoService.listarTodas());
+    public ResponseEntity<List<QuestaoResponseDTO>> listarTodas() {
+        return ResponseEntity.ok(questaoService.listarTodas().stream()
+                .map(questaoMapper::toResponseDTO)
+                .toList());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<QuestaoModel> buscarPorId(@PathVariable Long id) {
-        Optional<QuestaoModel> questao = questaoService.buscarPorId(id);
+    public ResponseEntity<QuestaoResponseDTO> buscarPorId(@PathVariable Long id) {
+        Optional<QuestaoResponseDTO> questao = questaoService.buscarPorId(id)
+                .map(questaoMapper::toResponseDTO);
         return questao.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }

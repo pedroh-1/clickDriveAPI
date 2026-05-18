@@ -1,6 +1,7 @@
 package br.edu.ifgoiano.clickdriveapi.controller;
 
-import br.edu.ifgoiano.clickdriveapi.model.SimuladoModel;
+import br.edu.ifgoiano.clickdriveapi.dto.SimuladoResponseDTO;
+import br.edu.ifgoiano.clickdriveapi.mapper.SimuladoMapper;
 import br.edu.ifgoiano.clickdriveapi.service.SimuladoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,21 +15,24 @@ public class SimuladoController {
     @Autowired
     private SimuladoService simuladoService;
 
+    @Autowired
+    private SimuladoMapper simuladoMapper;
+
     @PostMapping("/gerar/{alunoId}")
-    public ResponseEntity<SimuladoModel> gerarSimulado(@PathVariable Long alunoId) {
+    public ResponseEntity<SimuladoResponseDTO> gerarSimulado(@PathVariable Long alunoId) {
         try {
-            SimuladoModel simuladoGerado = simuladoService.gerarSimulado(alunoId);
-            return ResponseEntity.status(HttpStatus.CREATED).body(simuladoGerado);
+            var simuladoGerado = simuladoService.gerarSimulado(alunoId);
+            return ResponseEntity.status(HttpStatus.CREATED).body(simuladoMapper.toResponseDTO(simuladoGerado));
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().build();
         }
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<SimuladoModel> verSimulado(@PathVariable Long id) {
-        SimuladoModel simulado = simuladoService.buscarPorId(id);
+    public ResponseEntity<SimuladoResponseDTO> verSimulado(@PathVariable Long id) {
+        var simulado = simuladoService.buscarPorId(id);
         if (simulado != null) {
-            return ResponseEntity.ok(simulado);
+            return ResponseEntity.ok(simuladoMapper.toResponseDTO(simulado));
         }
         return ResponseEntity.notFound().build();
     }
