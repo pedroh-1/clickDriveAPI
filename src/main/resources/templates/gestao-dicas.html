@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dicas - ClickDrive</title>
+    <link rel="stylesheet" th:href="@{/css/gestao-autoescola.css}">
+</head>
+<body>
+<div class="app-shell">
+    <aside class="sidebar">
+        <div class="brand"><div class="brand-mark">CD</div><div><div class="brand-title">ClickDrive</div><div class="brand-subtitle">Gestao da autoescola</div></div></div>
+        <nav class="nav-menu">
+            <a class="nav-link" th:href="@{/web/simulados}">Simulados</a>
+            <a class="nav-link" th:href="@{/web/questoes}">Questoes</a>
+            <a class="nav-link" th:href="@{/web/opcoes}">Opcoes</a>
+            <a class="nav-link" th:href="@{/web/avaliacoes}">Avaliacoes</a>
+            <a class="nav-link" th:href="@{/web/pagamentos}">Pagamentos</a>
+            <a class="nav-link active" th:href="@{/web/dicas}">Dicas</a>
+        </nav>
+    </aside>
+    <main class="main">
+        <header class="page-header">
+            <div><h1 class="page-title">Dicas</h1><p class="page-kicker">Publique orientacoes de estudo, seguranca e preparacao para habilitacao.</p></div>
+            <div class="toolbar-badge">Educacao no transito</div>
+        </header>
+
+        <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+        <div th:if="${error}" class="alert alert-error" th:text="${error}"></div>
+
+        <section class="grid">
+            <form class="panel form-grid" th:action="@{/web/dicas}" method="post">
+                <h2 class="panel-title">Nova dica</h2>
+                <div class="field"><label for="titulo">Titulo</label><input id="titulo" name="titulo" required></div>
+                <div class="field"><label for="categoriaDicaId">ID da categoria</label><input id="categoriaDicaId" name="categoriaDicaId" type="number" min="1" required></div>
+                <div class="field"><label for="conteudo">Conteudo</label><textarea id="conteudo" name="conteudo" required></textarea></div>
+                <button class="btn btn-primary" type="submit">Publicar dica</button>
+            </form>
+            <section class="panel">
+                <h2 class="panel-title">Dicas publicadas</h2>
+                <div class="table-wrap">
+                    <table>
+                        <thead><tr><th>ID</th><th>Titulo</th><th>Categoria</th><th>Publicacao</th><th>Conteudo</th></tr></thead>
+                        <tbody>
+                        <tr th:each="dica : ${dicas}">
+                            <td th:text="${dica.id}">1</td>
+                            <td th:text="${dica.titulo}">Titulo</td>
+                            <td th:text="${dica.categoriaDicaNome != null ? dica.categoriaDicaNome : dica.categoriaDicaId}">Categoria</td>
+                            <td th:text="${dica.dataPublicacao}">Data</td>
+                            <td th:text="${dica.conteudo}">Conteudo</td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(dicas)}"><td colspan="5" class="empty-state">Nenhuma dica publicada.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </section>
+    </main>
+</div>
+</body>
+</html>

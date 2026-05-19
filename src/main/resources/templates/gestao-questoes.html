@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Questoes - ClickDrive</title>
+    <link rel="stylesheet" th:href="@{/css/gestao-autoescola.css}">
+</head>
+<body>
+<div class="app-shell">
+    <aside class="sidebar">
+        <div class="brand"><div class="brand-mark">CD</div><div><div class="brand-title">ClickDrive</div><div class="brand-subtitle">Gestao da autoescola</div></div></div>
+        <nav class="nav-menu">
+            <a class="nav-link" th:href="@{/web/simulados}">Simulados</a>
+            <a class="nav-link active" th:href="@{/web/questoes}">Questoes</a>
+            <a class="nav-link" th:href="@{/web/opcoes}">Opcoes</a>
+            <a class="nav-link" th:href="@{/web/avaliacoes}">Avaliacoes</a>
+            <a class="nav-link" th:href="@{/web/pagamentos}">Pagamentos</a>
+            <a class="nav-link" th:href="@{/web/dicas}">Dicas</a>
+        </nav>
+    </aside>
+    <main class="main">
+        <header class="page-header">
+            <div><h1 class="page-title">Questoes</h1><p class="page-kicker">Cadastre perguntas do simulado com quatro alternativas e uma resposta correta.</p></div>
+            <div class="toolbar-badge">Legislacao e placas</div>
+        </header>
+
+        <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+        <div th:if="${error}" class="alert alert-error" th:text="${error}"></div>
+
+        <section class="grid">
+            <form class="panel form-grid" th:action="@{/web/questoes}" method="post">
+                <h2 class="panel-title">Nova questao</h2>
+                <div class="field"><label for="enunciado">Enunciado</label><textarea id="enunciado" name="enunciado" required></textarea></div>
+                <div class="field"><label for="categoria">Categoria</label><input id="categoria" name="categoria" required></div>
+                <div class="field"><label>Alternativas</label><input name="textos" placeholder="Opcao A" required></div>
+                <div class="field"><input name="textos" placeholder="Opcao B" required></div>
+                <div class="field"><input name="textos" placeholder="Opcao C" required></div>
+                <div class="field"><input name="textos" placeholder="Opcao D" required></div>
+                <div class="field">
+                    <label for="corretaIndex">Alternativa correta</label>
+                    <select id="corretaIndex" name="corretaIndex" required>
+                        <option value="0">Opcao A</option>
+                        <option value="1">Opcao B</option>
+                        <option value="2">Opcao C</option>
+                        <option value="3">Opcao D</option>
+                    </select>
+                </div>
+                <button class="btn btn-primary" type="submit">Salvar questao</button>
+            </form>
+
+            <section class="panel">
+                <h2 class="panel-title">Banco de questoes</h2>
+                <div class="table-wrap">
+                    <table>
+                        <thead><tr><th>ID</th><th>Categoria</th><th>Enunciado</th><th>Opcoes</th></tr></thead>
+                        <tbody>
+                        <tr th:each="questao : ${questoes}">
+                            <td th:text="${questao.id}">1</td>
+                            <td th:text="${questao.categoria}">Placas</td>
+                            <td th:text="${questao.enunciado}">Pergunta</td>
+                            <td><span th:text="${#lists.size(questao.opcoes)}">4</span></td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(questoes)}"><td colspan="4" class="empty-state">Nenhuma questao cadastrada.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </section>
+    </main>
+</div>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagamentos - ClickDrive</title>
+    <link rel="stylesheet" th:href="@{/css/gestao-autoescola.css}">
+</head>
+<body>
+<div class="app-shell">
+    <aside class="sidebar">
+        <div class="brand"><div class="brand-mark">CD</div><div><div class="brand-title">ClickDrive</div><div class="brand-subtitle">Gestao da autoescola</div></div></div>
+        <nav class="nav-menu">
+            <a class="nav-link" th:href="@{/web/simulados}">Simulados</a>
+            <a class="nav-link" th:href="@{/web/questoes}">Questoes</a>
+            <a class="nav-link" th:href="@{/web/opcoes}">Opcoes</a>
+            <a class="nav-link" th:href="@{/web/avaliacoes}">Avaliacoes</a>
+            <a class="nav-link active" th:href="@{/web/pagamentos}">Pagamentos</a>
+            <a class="nav-link" th:href="@{/web/dicas}">Dicas</a>
+        </nav>
+    </aside>
+    <main class="main">
+        <header class="page-header">
+            <div><h1 class="page-title">Pagamentos</h1><p class="page-kicker">Gere cobrancas de aulas e confirme recebimentos.</p></div>
+            <div class="toolbar-badge">Financeiro</div>
+        </header>
+
+        <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+        <div th:if="${error}" class="alert alert-error" th:text="${error}"></div>
+
+        <section class="grid">
+            <form class="panel form-grid" th:action="@{/web/pagamentos}" method="post">
+                <h2 class="panel-title">Nova cobranca</h2>
+                <div class="field"><label for="aulaId">ID da aula</label><input id="aulaId" name="aulaId" type="number" min="1" required></div>
+                <div class="field"><label for="valor">Valor</label><input id="valor" name="valor" type="number" min="0.01" step="0.01" required></div>
+                <button class="btn btn-primary" type="submit">Gerar cobranca</button>
+            </form>
+            <section class="panel">
+                <h2 class="panel-title">Cobrancas</h2>
+                <div class="table-wrap">
+                    <table>
+                        <thead><tr><th>ID</th><th>Aula</th><th>Valor</th><th>Status</th><th>Data</th><th>Acao</th></tr></thead>
+                        <tbody>
+                        <tr th:each="pagamento : ${pagamentos}">
+                            <td th:text="${pagamento.id}">1</td>
+                            <td th:text="${pagamento.aulaId}">10</td>
+                            <td th:text="${pagamento.valor}">100</td>
+                            <td><span class="status" th:classappend="${pagamento.status.name() == 'PAGO'} ? ' status-ok' : ' status-danger'" th:text="${pagamento.status}">PENDENTE</span></td>
+                            <td th:text="${pagamento.dataPagamento}">Data</td>
+                            <td>
+                                <form th:if="${pagamento.status.name() != 'PAGO'}" th:action="@{/web/pagamentos/{id}/confirmar(id=${pagamento.id})}" method="post">
+                                    <button class="btn btn-secondary" type="submit">Confirmar</button>
+                                </form>
+                            </td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(pagamentos)}"><td colspan="6" class="empty-state">Nenhum pagamento encontrado.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </section>
+    </main>
+</div>
+</body>
+</html>

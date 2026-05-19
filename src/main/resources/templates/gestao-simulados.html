@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulados - ClickDrive</title>
+    <link rel="stylesheet" th:href="@{/css/gestao-autoescola.css}">
+</head>
+<body>
+<div class="app-shell">
+    <aside class="sidebar">
+        <div class="brand"><div class="brand-mark">CD</div><div><div class="brand-title">ClickDrive</div><div class="brand-subtitle">Gestao da autoescola</div></div></div>
+        <nav class="nav-menu">
+            <a class="nav-link active" th:href="@{/web/simulados}">Simulados</a>
+            <a class="nav-link" th:href="@{/web/questoes}">Questoes</a>
+            <a class="nav-link" th:href="@{/web/opcoes}">Opcoes</a>
+            <a class="nav-link" th:href="@{/web/avaliacoes}">Avaliacoes</a>
+            <a class="nav-link" th:href="@{/web/pagamentos}">Pagamentos</a>
+            <a class="nav-link" th:href="@{/web/dicas}">Dicas</a>
+        </nav>
+    </aside>
+    <main class="main">
+        <header class="page-header">
+            <div>
+                <h1 class="page-title">Simulados</h1>
+                <p class="page-kicker">Gere provas de transito para alunos e acompanhe pontuacao e aprovacao.</p>
+            </div>
+            <div class="toolbar-badge">Direcao defensiva</div>
+        </header>
+
+        <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+        <div th:if="${error}" class="alert alert-error" th:text="${error}"></div>
+
+        <section class="grid">
+            <form class="panel form-grid" th:action="@{/web/simulados/gerar}" method="post">
+                <h2 class="panel-title">Gerar simulado</h2>
+                <div class="field">
+                    <label for="alunoId">ID do aluno</label>
+                    <input id="alunoId" name="alunoId" type="number" min="1" required>
+                </div>
+                <button class="btn btn-primary" type="submit">Gerar prova</button>
+            </form>
+
+            <section class="panel">
+                <h2 class="panel-title">Simulados cadastrados</h2>
+                <div class="table-wrap">
+                    <table>
+                        <thead><tr><th>ID</th><th>Aluno</th><th>Data</th><th>Pontos</th><th>Status</th><th>Prova</th></tr></thead>
+                        <tbody>
+                        <tr th:each="simulado : ${simulados}">
+                            <td th:text="${simulado.id}">1</td>
+                            <td th:text="${simulado.alunoId}">10</td>
+                            <td th:text="${simulado.dataRealizacao}">2026-05-19</td>
+                            <td th:text="${simulado.pontuacao}">0</td>
+                            <td><span class="status" th:classappend="${simulado.aprovado} ? ' status-ok' : ' status-danger'" th:text="${simulado.aprovado} ? 'Aprovado' : 'Pendente/Reprovado'">Status</span></td>
+                            <td><a class="btn btn-outline" th:href="@{/web/simulados/{id}(id=${simulado.id})}">Abrir</a></td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(simulados)}"><td colspan="6" class="empty-state">Nenhum simulado encontrado.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </section>
+    </main>
+</div>
+</body>
+</html>

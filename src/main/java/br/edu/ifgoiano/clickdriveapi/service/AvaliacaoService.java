@@ -8,6 +8,8 @@ import br.edu.ifgoiano.clickdriveapi.repository.AvaliacaoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class AvaliacaoService {
 
@@ -46,5 +48,9 @@ public class AvaliacaoService {
     public AvaliacaoResponseDTO buscarPorAulaDTO(Long aulaId) {
         AvaliacaoModel avaliacao = buscarPorAula(aulaId);
         return avaliacao != null ? avaliacaoMapper.toResponseDTO(avaliacao) : null;
+    }
+
+    public List<AvaliacaoResponseDTO> listarTodasDTO() {
+        return avaliacaoMapper.toResponseDTOList(avaliacaoRepository.findAll());
     }
 }

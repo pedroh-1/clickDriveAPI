@@ -57,4 +57,8 @@ public class SimuladoService {
         SimuladoModel simulado = buscarPorId(id);
         return simulado != null ? simuladoMapper.toResponseDTO(simulado) : null;
     }
+
+    public List<SimuladoResponseDTO> listarTodosDTO() {
+        return simuladoMapper.toResponseDTOList(simuladoRepository.findAll());
+    }
 }
