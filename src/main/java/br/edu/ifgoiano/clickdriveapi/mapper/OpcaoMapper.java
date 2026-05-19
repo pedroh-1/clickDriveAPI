@@ -4,41 +4,24 @@ import br.edu.ifgoiano.clickdriveapi.dto.OpcaoRequestDTO;
 import br.edu.ifgoiano.clickdriveapi.dto.OpcaoResponseDTO;
 import br.edu.ifgoiano.clickdriveapi.model.OpcaoModel;
 import br.edu.ifgoiano.clickdriveapi.model.QuestaoModel;
-import org.springframework.stereotype.Component;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
-@Component
-public class OpcaoMapper {
+@Mapper(componentModel = "spring")
+public interface OpcaoMapper {
 
-    public OpcaoModel toEntity(OpcaoRequestDTO dto) {
-        if (dto == null) {
+    @Mapping(target = "questao", source = "questaoId")
+    OpcaoModel toEntity(OpcaoRequestDTO dto);
+
+    @Mapping(target = "questaoId", source = "questao.id")
+    OpcaoResponseDTO toResponseDTO(OpcaoModel entity);
+
+    default QuestaoModel mapQuestao(Long questaoId) {
+        if (questaoId == null) {
             return null;
         }
-
-        OpcaoModel opcao = new OpcaoModel();
-        opcao.setId(dto.id());
-        opcao.setTexto(dto.texto());
-        opcao.setCorreta(dto.correta());
-
-        if (dto.questaoId() != null) {
-            QuestaoModel questao = new QuestaoModel();
-            questao.setId(dto.questaoId());
-            opcao.setQuestao(questao);
-        }
-
-        return opcao;
-    }
-
-    public OpcaoResponseDTO toResponseDTO(OpcaoModel entity) {
-        if (entity == null) {
-            return null;
-        }
-
-        Long questaoId = entity.getQuestao() != null ? entity.getQuestao().getId() : null;
-        return new OpcaoResponseDTO(
-                entity.getId(),
-                entity.getTexto(),
-                entity.getCorreta(),
-                questaoId
-        );
+        QuestaoModel questao = new QuestaoModel();
+        questao.setId(questaoId);
+        return questao;
     }
 }

@@ -1,5 +1,8 @@
 package br.edu.ifgoiano.clickdriveapi.service;
 
+import br.edu.ifgoiano.clickdriveapi.dto.DicaRequestDTO;
+import br.edu.ifgoiano.clickdriveapi.dto.DicaResponseDTO;
+import br.edu.ifgoiano.clickdriveapi.mapper.DicaMapper;
 import br.edu.ifgoiano.clickdriveapi.model.CategoriaDicaModel;
 import br.edu.ifgoiano.clickdriveapi.model.DicaModel;
 import br.edu.ifgoiano.clickdriveapi.repository.CategoriaDicaRepository;
@@ -20,9 +23,18 @@ public class DicaService {
     @Autowired
     private CategoriaDicaRepository categoriaDicaRepository;
 
+    @Autowired
+    private DicaMapper dicaMapper;
+
 
     public CategoriaDicaModel salvarCategoria(CategoriaDicaModel categoria){
         return categoriaDicaRepository.save(categoria);
+    }
+
+    public DicaResponseDTO salvarDica(DicaRequestDTO dicaDTO) {
+        DicaModel dica = dicaMapper.toEntity(dicaDTO);
+        DicaModel dicaSalva = salvarDica(dica);
+        return dicaMapper.toResponseDTO(dicaSalva);
     }
 
     public DicaModel salvarDica(DicaModel dica) {
@@ -46,11 +58,23 @@ public class DicaService {
         return dicaRepository.findAll();
     }
 
+    public List<DicaResponseDTO> listarTodasDTO() {
+        return dicaMapper.toResponseDTOList(listarTodas());
+    }
+
     public Optional<DicaModel> buscarPorId(Long id) {
         return dicaRepository.findById(id);
     }
 
+    public Optional<DicaResponseDTO> buscarPorIdDTO(Long id) {
+        return buscarPorId(id).map(dicaMapper::toResponseDTO);
+    }
+
     public List<DicaModel> listarPorCategoria(Long categoriaId) {
         return dicaRepository.buscarDicasPorCategoria(categoriaId);
+    }
+
+    public List<DicaResponseDTO> listarPorCategoriaDTO(Long categoriaId) {
+        return dicaMapper.toResponseDTOList(listarPorCategoria(categoriaId));
     }
 }
