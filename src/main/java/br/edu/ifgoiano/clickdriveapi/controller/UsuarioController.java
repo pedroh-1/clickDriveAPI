@@ -1,8 +1,8 @@
 package br.edu.ifgoiano.clickdriveapi.controller;
 
+import br.edu.ifgoiano.clickdriveapi.dto.RegistroUsuarioDTO;
 import br.edu.ifgoiano.clickdriveapi.model.UsuarioModel;
 import br.edu.ifgoiano.clickdriveapi.service.UsuarioService;
-import jakarta.websocket.Endpoint;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,8 +24,8 @@ public class UsuarioController {
     //Endpoint para cadastrar um novo usuario
 
     @PostMapping
-    public ResponseEntity<UsuarioModel> criarUsuario(@RequestBody UsuarioModel usuario){
-        UsuarioModel novoUsuario = usuarioService.salvar(usuario);
+    public ResponseEntity<UsuarioModel> criarUsuario(@RequestBody RegistroUsuarioDTO dto){
+        UsuarioModel novoUsuario = usuarioService.salvar(dto);
         return new ResponseEntity<>(novoUsuario, HttpStatus.CREATED);
 
     }
@@ -55,8 +55,7 @@ public class UsuarioController {
 
     @PutMapping("/{id}")
     public UsuarioModel atualizarUsuario(@PathVariable Long id, @RequestBody UsuarioModel usuarioModel){
-        usuarioModel.setId(id);
-        return usuarioService.salvar(usuarioModel);
+        return usuarioService.update(id, usuarioModel);
     }
 
 

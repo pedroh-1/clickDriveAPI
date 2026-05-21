@@ -5,7 +5,9 @@ import br.edu.ifgoiano.clickdriveapi.model.StatusCandidatura;
 import br.edu.ifgoiano.clickdriveapi.model.InstrutorModel;
 import br.edu.ifgoiano.clickdriveapi.repository.CandidaturaRepository;
 import br.edu.ifgoiano.clickdriveapi.repository.InstrutorRepository;
+import br.edu.ifgoiano.clickdriveapi.repository.UsuarioRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,10 +17,12 @@ public class CandidaturaService {
 
     private final CandidaturaRepository candidaturaRepository;
     private final InstrutorRepository instrutorRepository;
+    private final UsuarioRepository usuarioRepository;
 
-    public CandidaturaService(CandidaturaRepository candidaturaRepository, InstrutorRepository instrutorRepository) {
+    public CandidaturaService(CandidaturaRepository candidaturaRepository, InstrutorRepository instrutorRepository, UsuarioRepository usuarioRepository) {
         this.candidaturaRepository = candidaturaRepository;
         this.instrutorRepository = instrutorRepository;
+        this.usuarioRepository = usuarioRepository;
     }
 
     public CandidaturaModel salvar(CandidaturaModel candidatura) {
@@ -37,6 +41,7 @@ public class CandidaturaService {
         return candidaturaRepository.findAll();
     }
 
+    @Transactional
     public CandidaturaModel aprovarInstrutor(Long id) {
         CandidaturaModel candidatura = candidaturaRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Candidatura não encontrada"));
@@ -49,6 +54,9 @@ public class CandidaturaService {
         if (instrutor != null) {
             instrutor.setAprovado(true);
             instrutorRepository.save(instrutor);
+            
+            // 3. Sincronização transacional: Garante que o perfil no banco seja "INSTRUTOR"
+            usuarioRepository.atualizarPerfil(instrutor.getId(), "INSTRUTOR");
         }
 
         return candidaturaRepository.save(candidatura);
