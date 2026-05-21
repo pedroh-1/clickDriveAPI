@@ -177,18 +177,4 @@ public class GestaoAutoEscolaWebController {
         }
         return "redirect:/web/dicas";
     }
-    // Exemplo de como receber os dados no seu Controller
-    @PostMapping("/disponibilidades")
-    public String criarDisponibilidade(@RequestParam Long instrutorId, @RequestParam String diasSemana,
-                                       @RequestParam String horario, @RequestParam String horaFim) {
-        // Chame seu Service aqui: disponibService.salvar(...)
-        return "redirect:/web/agendamento";
-    }
-
-    @PostMapping("/aulas")
-    public String criarAula(@RequestParam Long alunoId, @RequestParam Long instrutorId,
-                            @RequestParam String data, @RequestParam String horario) {
-        // Chame seu Service aqui: aulaService.salvar(...)
-        return "redirect:/web/agendamento";
-    }
 }
