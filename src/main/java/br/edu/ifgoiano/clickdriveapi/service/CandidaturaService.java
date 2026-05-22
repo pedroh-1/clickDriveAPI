@@ -3,6 +3,7 @@ package br.edu.ifgoiano.clickdriveapi.service;
 import br.edu.ifgoiano.clickdriveapi.model.CandidaturaModel;
 import br.edu.ifgoiano.clickdriveapi.model.StatusCandidatura;
 import br.edu.ifgoiano.clickdriveapi.model.InstrutorModel;
+import br.edu.ifgoiano.clickdriveapi.model.UsuarioModel;
 import br.edu.ifgoiano.clickdriveapi.repository.CandidaturaRepository;
 import br.edu.ifgoiano.clickdriveapi.repository.UsuarioRepository;
 import org.springframework.stereotype.Service;
@@ -22,10 +23,10 @@ public class CandidaturaService {
     }
 
     public CandidaturaModel salvar(CandidaturaModel candidatura) {
-        // Valida se o Usuário base existe antes de criar o processo de análise
-        if (candidatura.getInstrutor() != null && candidatura.getInstrutor().getId() != null) {
-            usuarioRepository.findById(candidatura.getInstrutor().getId())
-                    .orElseThrow(() -> new RuntimeException("Usuario Candidato não encontrado"));
+        // Valida se o Usuário base realmente existe antes de criar a candidatura
+        if (candidatura.getUsuario() != null && candidatura.getUsuario().getId() != null) {
+            usuarioRepository.findById(candidatura.getUsuario().getId())
+                    .orElseThrow(() -> new RuntimeException("Usuário Candidato não encontrado"));
         }
 
         candidatura.setStatus(StatusCandidatura.PENDENTE);
@@ -44,15 +45,22 @@ public class CandidaturaService {
         // 1. Atualiza o status da candidatura para APROVADA
         candidatura.setStatus(StatusCandidatura.APROVADA);
 
-        // 2. Atualiza o instrutor vinculado para aprovado = true
-        InstrutorModel instrutor = candidatura.getInstrutor();
-        if (instrutor != null) {
-            instrutor.setAprovado(true);
+        // 2. Transforma o usuário em Instrutor e salva na tabela 'instrutores'
+        UsuarioModel usuarioBase = candidatura.getUsuario();
+        if (usuarioBase != null) {
+            // Buscamos ou instanciamos o Instrutor polimorficamente
+            InstrutorModel instrutor = new InstrutorModel();
+            instrutor.setId(usuarioBase.getId());
+            instrutor.setNome(usuarioBase.getNome());
+            instrutor.setEmail(usuarioBase.getEmail());
+            instrutor.setSenha(usuarioBase.getSenha());
+            instrutor.setTelefone(usuarioBase.getTelefone());
+            instrutor.setAprovado(true); // Agora ele está oficialmente aprovado!
 
-            // CORREÇÃO: Usamos o usuarioRepository que está injetado no topo da classe!
+            // Salva na tabela de instrutores
             usuarioRepository.save(instrutor);
 
-            // 3. Sincronização transacional: Garante que o perfil no banco mude para "INSTRUTOR"
+            // 3. Sincronização transacional do perfil lágico
             usuarioRepository.atualizarPerfil(instrutor.getId(), "INSTRUTOR");
         }
 
