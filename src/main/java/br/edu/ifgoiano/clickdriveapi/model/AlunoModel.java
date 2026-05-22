@@ -6,6 +6,7 @@ import jakarta.persistence.Table;
 import java.time.LocalDate;
 
 @Entity
+@Table(name = "alunos")
 @DiscriminatorValue("ALUNO")
 public class AlunoModel extends UsuarioModel {
 

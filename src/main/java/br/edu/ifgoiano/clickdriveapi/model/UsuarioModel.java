@@ -4,7 +4,9 @@ package br.edu.ifgoiano.clickdriveapi.model;
 import jakarta.persistence.*;
 
 @Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@Table(name = "usuarios")
+@Inheritance(strategy = InheritanceType.JOINED)
+//@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "perfil", discriminatorType = DiscriminatorType.STRING)
 public class UsuarioModel {
 

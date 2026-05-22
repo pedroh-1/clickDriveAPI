@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import br.edu.ifgoiano.clickdriveapi.model.StatusCandidatura;
 @Entity
+@Table(name = "candidaturas")
 public class CandidaturaModel {
 
     @Id

@@ -4,33 +4,28 @@ import br.edu.ifgoiano.clickdriveapi.model.CandidaturaModel;
 import br.edu.ifgoiano.clickdriveapi.model.StatusCandidatura;
 import br.edu.ifgoiano.clickdriveapi.model.InstrutorModel;
 import br.edu.ifgoiano.clickdriveapi.repository.CandidaturaRepository;
-import br.edu.ifgoiano.clickdriveapi.repository.InstrutorRepository;
 import br.edu.ifgoiano.clickdriveapi.repository.UsuarioRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class CandidaturaService {
 
     private final CandidaturaRepository candidaturaRepository;
-    private final InstrutorRepository instrutorRepository;
     private final UsuarioRepository usuarioRepository;
 
-    public CandidaturaService(CandidaturaRepository candidaturaRepository, InstrutorRepository instrutorRepository, UsuarioRepository usuarioRepository) {
+    public CandidaturaService(CandidaturaRepository candidaturaRepository, UsuarioRepository usuarioRepository){
         this.candidaturaRepository = candidaturaRepository;
-        this.instrutorRepository = instrutorRepository;
         this.usuarioRepository = usuarioRepository;
     }
 
     public CandidaturaModel salvar(CandidaturaModel candidatura) {
-        // Busca o instrutor no banco para garantir que o vínculo não seja nulo na resposta
+        // Valida se o Usuário base existe antes de criar o processo de análise
         if (candidatura.getInstrutor() != null && candidatura.getInstrutor().getId() != null) {
-            InstrutorModel instrutorExistente = instrutorRepository.findById(candidatura.getInstrutor().getId())
-                    .orElseThrow(() -> new RuntimeException("Instrutor não encontrado"));
-            candidatura.setInstrutor(instrutorExistente);
+            usuarioRepository.findById(candidatura.getInstrutor().getId())
+                    .orElseThrow(() -> new RuntimeException("Usuario Candidato não encontrado"));
         }
 
         candidatura.setStatus(StatusCandidatura.PENDENTE);
@@ -53,9 +48,11 @@ public class CandidaturaService {
         InstrutorModel instrutor = candidatura.getInstrutor();
         if (instrutor != null) {
             instrutor.setAprovado(true);
-            instrutorRepository.save(instrutor);
-            
-            // 3. Sincronização transacional: Garante que o perfil no banco seja "INSTRUTOR"
+
+            // CORREÇÃO: Usamos o usuarioRepository que está injetado no topo da classe!
+            usuarioRepository.save(instrutor);
+
+            // 3. Sincronização transacional: Garante que o perfil no banco mude para "INSTRUTOR"
             usuarioRepository.atualizarPerfil(instrutor.getId(), "INSTRUTOR");
         }
 
@@ -66,12 +63,7 @@ public class CandidaturaService {
         candidaturaRepository.deleteById(id);
     }
 
-    // O retorno deve ser List<CandidaturaModel> e não InstrutorModel
     public List<CandidaturaModel> findByStatus(StatusCandidatura status) {
-        // Você deve usar o repositório de Candidatura para filtrar
         return candidaturaRepository.findByStatus(status);
     }
-
-
-   
 }

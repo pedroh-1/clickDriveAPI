@@ -1,11 +1,9 @@
 package br.edu.ifgoiano.clickdriveapi.model;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.DiscriminatorValue;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 
 @Entity
+@Table(name = "instrutores")
 @DiscriminatorValue("INSTRUTOR")
 public class InstrutorModel extends UsuarioModel {
 
