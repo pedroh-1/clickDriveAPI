@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "candidaturas")
+@Table(name = "tb_candidaturas")
 public class CandidaturaModel {
 
     @Id
@@ -19,6 +19,28 @@ public class CandidaturaModel {
 
     @Enumerated(EnumType.STRING)
     private StatusCandidatura status = StatusCandidatura.PENDENTE;
+
+    private String credenciamentoPretendido;//
+    private String urlDocumentoPdf;// link da documentação
+
+    public String getCredenciamentoPretendido() {
+        return credenciamentoPretendido;
+    }
+
+    public void setCredenciamentoPretendido(String credenciamentoPretendido) {
+        this.credenciamentoPretendido = credenciamentoPretendido;
+    }
+
+    public String getUrlDocumentoPdf() {
+        return urlDocumentoPdf;
+    }
+
+    public void setUrlDocumentoPdf(String urlDocumentoPdf) {
+        this.urlDocumentoPdf = urlDocumentoPdf;
+    }
+
+    //get and sets
+
 
     public Long getId() {
         return id;
