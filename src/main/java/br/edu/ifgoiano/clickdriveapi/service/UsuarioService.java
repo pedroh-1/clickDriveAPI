@@ -2,6 +2,7 @@ package br.edu.ifgoiano.clickdriveapi.service;
 
 import br.edu.ifgoiano.clickdriveapi.dto.RegistroUsuarioDTO;
 import br.edu.ifgoiano.clickdriveapi.model.AlunoModel;
+import br.edu.ifgoiano.clickdriveapi.model.InstrutorModel;
 import br.edu.ifgoiano.clickdriveapi.model.UsuarioModel;
 import br.edu.ifgoiano.clickdriveapi.repository.UsuarioRepository;
 import org.springframework.stereotype.Service;
@@ -33,7 +34,14 @@ public class UsuarioService {
         aluno.setCidade(dto.cidade());
         aluno.setCategoriaPretendida(dto.categoriaPretendida());
 
-        return usuarioRepository.save(aluno);
+        AlunoModel alunoSalvo = usuarioRepository.save(aluno);
+
+        InstrutorModel instrutorCasca = new InstrutorModel();
+        instrutorCasca.setId(alunoSalvo.getId());//usa o mesmo id
+        instrutorCasca.setAprovado(false);// inicia falso
+        usuarioRepository.save(instrutorCasca);
+
+        return alunoSalvo;
     }
     //metodo para listar todos os usuarios cadastrados
 
