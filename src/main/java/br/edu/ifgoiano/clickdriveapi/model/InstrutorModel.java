@@ -1,12 +1,9 @@
 package br.edu.ifgoiano.clickdriveapi.model;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.DiscriminatorValue;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 
 @Entity
-@DiscriminatorValue("INSTRUTOR")
+@Table(name = "instrutores")
 public class InstrutorModel extends UsuarioModel {
 
     private String credenciamentoDetran;
@@ -14,8 +11,7 @@ public class InstrutorModel extends UsuarioModel {
     private Double valorHora;
     private Boolean aprovado = false;
 
-    @OneToOne(mappedBy = "instrutor", cascade = CascadeType.ALL, orphanRemoval = true)
-    private CandidaturaModel candidatura;
+    // REMOVIDO: O atributo @OneToOne 'candidatura' foi removido para consertar o mapeamento bidirecional quebrado
 
     public InstrutorModel(Long id, String nome, String email, String senha, String telefone, String credenciamentoDetran, Double valorHora, String categoria, Boolean aprovado) {
         super(id, nome, email, senha, telefone);
@@ -59,6 +55,4 @@ public class InstrutorModel extends UsuarioModel {
     public void setValorHora(Double valorHora) {
         this.valorHora = valorHora;
     }
-
-
 }
