@@ -305,6 +305,60 @@ th {
     color: var(--muted);
 }
 
+.login-shell {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: minmax(320px, 0.42fr) minmax(360px, 1fr);
+    background: var(--page);
+}
+
+.login-brand-panel {
+    background: var(--red-900);
+    color: #fff;
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.login-brand {
+    padding: 0 0 22px;
+}
+
+.login-copy {
+    max-width: 420px;
+    padding-bottom: 28px;
+}
+
+.login-copy h1 {
+    margin: 0 0 12px;
+    font-size: 34px;
+    line-height: 1.15;
+}
+
+.login-copy p {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.78);
+    line-height: 1.5;
+}
+
+.login-content {
+    display: grid;
+    place-items: center;
+    padding: 28px;
+}
+
+.login-card {
+    width: 100%;
+    max-width: 430px;
+    padding: 24px;
+}
+
+.login-button {
+    width: 100%;
+    margin-top: 4px;
+}
+
 @media (max-width: 860px) {
     .app-shell {
         display: block;
@@ -332,5 +386,29 @@ th {
 
     .panel {
         margin-bottom: 16px;
+    }
+
+    .login-shell {
+        display: block;
+    }
+
+    .login-brand-panel {
+        min-height: 230px;
+    }
+
+    .login-copy {
+        padding-bottom: 0;
+    }
+
+    .login-copy h1 {
+        font-size: 28px;
+    }
+
+    .login-content {
+        display: block;
+    }
+
+    .login-card {
+        max-width: none;
     }
 }

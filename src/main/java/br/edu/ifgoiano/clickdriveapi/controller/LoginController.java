@@ -20,7 +20,7 @@ public class LoginController {
     }
 
     // Exibe a tela de login no navegador
-    @GetMapping("/login")
+    @GetMapping("/web/login")
     public String telaLogin() {
         return "login";
     }
