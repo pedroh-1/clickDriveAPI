@@ -1,15 +1,29 @@
 package br.edu.ifgoiano.clickdriveapi.service;
 
+import br.edu.ifgoiano.clickdriveapi.dto.AvaliacaoRequestDTO;
+import br.edu.ifgoiano.clickdriveapi.dto.AvaliacaoResponseDTO;
+import br.edu.ifgoiano.clickdriveapi.mapper.AvaliacaoMapper;
 import br.edu.ifgoiano.clickdriveapi.model.AvaliacaoModel;
 import br.edu.ifgoiano.clickdriveapi.repository.AvaliacaoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class AvaliacaoService {
 
     @Autowired
     private AvaliacaoRepository avaliacaoRepository;
+
+    @Autowired
+    private AvaliacaoMapper avaliacaoMapper;
+
+    public AvaliacaoResponseDTO salvarAvaliacao(AvaliacaoRequestDTO avaliacaoDTO) {
+        AvaliacaoModel avaliacao = avaliacaoMapper.toEntity(avaliacaoDTO);
+        AvaliacaoModel avaliacaoSalva = salvarAvaliacao(avaliacao);
+        return avaliacaoMapper.toResponseDTO(avaliacaoSalva);
+    }
 
     public AvaliacaoModel salvarAvaliacao(AvaliacaoModel avaliacao) {
 
@@ -29,5 +43,14 @@ public class AvaliacaoService {
 
     public AvaliacaoModel buscarPorAula(Long aulaId) {
         return avaliacaoRepository.findByAulaId(aulaId);
+    }
+
+    public AvaliacaoResponseDTO buscarPorAulaDTO(Long aulaId) {
+        AvaliacaoModel avaliacao = buscarPorAula(aulaId);
+        return avaliacao != null ? avaliacaoMapper.toResponseDTO(avaliacao) : null;
+    }
+
+    public List<AvaliacaoResponseDTO> listarTodasDTO() {
+        return avaliacaoMapper.toResponseDTOList(avaliacaoRepository.findAll());
     }
 }

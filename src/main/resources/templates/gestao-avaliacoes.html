@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avaliacoes - ClickDrive</title>
+    <link rel="stylesheet" th:href="@{/css/gestao-autoescola.css}">
+</head>
+<body>
+<div class="app-shell">
+    <aside class="sidebar">
+        <div class="brand"><div class="brand-mark">CD</div><div><div class="brand-title">ClickDrive</div><div class="brand-subtitle">Gestao da autoescola</div></div></div>
+        <nav class="nav-menu">
+            <a class="nav-link" th:href="@{/web/simulados}">Simulados</a>
+            <a class="nav-link" th:href="@{/web/questoes}">Questoes</a>
+            <a class="nav-link" th:href="@{/web/opcoes}">Opcoes</a>
+            <a class="nav-link active" th:href="@{/web/avaliacoes}">Avaliacoes</a>
+            <a class="nav-link" th:href="@{/web/pagamentos}">Pagamentos</a>
+            <a class="nav-link" th:href="@{/web/dicas}">Dicas</a>
+            <a class="nav-link" th:href="@{/web/login}">Login</a>
+        </nav>
+    </aside>
+    <main class="main">
+        <header class="page-header">
+            <div><h1 class="page-title">Avaliacoes</h1><p class="page-kicker">Registre a nota da aula e acompanhe comentarios dos alunos.</p></div>
+            <div class="toolbar-badge">Qualidade da aula</div>
+        </header>
+
+        <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+        <div th:if="${error}" class="alert alert-error" th:text="${error}"></div>
+
+        <section class="grid">
+            <form class="panel form-grid" th:action="@{/web/avaliacoes}" method="post">
+                <h2 class="panel-title">Nova avaliacao</h2>
+                <div class="field"><label for="aulaId">ID da aula</label><input id="aulaId" name="aulaId" type="number" min="1" required></div>
+                <div class="field"><label for="nota">Nota</label><select id="nota" name="nota" required><option value="5">5</option><option value="4">4</option><option value="3">3</option><option value="2">2</option><option value="1">1</option></select></div>
+                <div class="field"><label for="comentario">Comentario</label><textarea id="comentario" name="comentario"></textarea></div>
+                <button class="btn btn-primary" type="submit">Salvar avaliacao</button>
+            </form>
+            <section class="panel">
+                <h2 class="panel-title">Avaliacoes registradas</h2>
+                <div class="table-wrap">
+                    <table>
+                        <thead><tr><th>ID</th><th>Aula</th><th>Nota</th><th>Comentario</th></tr></thead>
+                        <tbody>
+                        <tr th:each="avaliacao : ${avaliacoes}">
+                            <td th:text="${avaliacao.id}">1</td>
+                            <td th:text="${avaliacao.aulaId}">10</td>
+                            <td><span class="status status-ok" th:text="${avaliacao.nota}">5</span></td>
+                            <td th:text="${avaliacao.comentario}">Comentario</td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(avaliacoes)}"><td colspan="4" class="empty-state">Nenhuma avaliacao cadastrada.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </section>
+    </main>
+</div>
+</body>
+</html>

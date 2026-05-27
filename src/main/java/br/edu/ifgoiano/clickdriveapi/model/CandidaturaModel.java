@@ -2,24 +2,44 @@ package br.edu.ifgoiano.clickdriveapi.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
-import br.edu.ifgoiano.clickdriveapi.model.StatusCandidatura;
+
 @Entity
+@Table(name = "tb_candidaturas")
 public class CandidaturaModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne // Cada candidatura pertence a um instrutor específico
-    @JoinColumn(name = "instrutor_id")
-    private InstrutorModel instrutor;
+    @OneToOne // Cada candidatura pertence a um usuário base do sistema
+    @JoinColumn(name = "usuario_id")
+    private UsuarioModel usuario;
 
     private LocalDateTime dataCriacao = LocalDateTime.now();
 
     @Enumerated(EnumType.STRING)
     private StatusCandidatura status = StatusCandidatura.PENDENTE;
 
-    // Getters e Setters
+    private String credenciamentoPretendido;//
+    private String urlDocumentoPdf;// link da documentação
+
+    public String getCredenciamentoPretendido() {
+        return credenciamentoPretendido;
+    }
+
+    public void setCredenciamentoPretendido(String credenciamentoPretendido) {
+        this.credenciamentoPretendido = credenciamentoPretendido;
+    }
+
+    public String getUrlDocumentoPdf() {
+        return urlDocumentoPdf;
+    }
+
+    public void setUrlDocumentoPdf(String urlDocumentoPdf) {
+        this.urlDocumentoPdf = urlDocumentoPdf;
+    }
+
+    //get and sets
 
 
     public Long getId() {
@@ -30,12 +50,12 @@ public class CandidaturaModel {
         this.id = id;
     }
 
-    public InstrutorModel getInstrutor() {
-        return instrutor;
+    public UsuarioModel getUsuario() {
+        return usuario;
     }
 
-    public void setInstrutor(InstrutorModel instrutor) {
-        this.instrutor = instrutor;
+    public void setUsuario(UsuarioModel usuario) {
+        this.usuario = usuario;
     }
 
     public LocalDateTime getDataCriacao() {
@@ -54,4 +74,3 @@ public class CandidaturaModel {
         this.status = status;
     }
 }
-

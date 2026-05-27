@@ -4,16 +4,31 @@ package br.edu.ifgoiano.clickdriveapi.model;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "usuarios")
+@Inheritance(strategy = InheritanceType.JOINED)
+//@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "perfil", discriminatorType = DiscriminatorType.STRING)
 public class UsuarioModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
+
+    @Column(name = "perfil", insertable = false, updatable = false)
+    private String perfil;
 
     private String nome;
     private String email;
     private String senha;
     private String telefone;
+
+    public String getPerfil() {
+        return perfil;
+    }
+
+    public void setPerfil(String perfil) {
+        this.perfil = perfil;
+    }
 
     public UsuarioModel(Long id, String nome, String email, String senha, String telefone) {
         this.id = id;

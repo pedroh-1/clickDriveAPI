@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Opcoes - ClickDrive</title>
+    <link rel="stylesheet" th:href="@{/css/gestao-autoescola.css}">
+</head>
+<body>
+<div class="app-shell">
+    <aside class="sidebar">
+        <div class="brand"><div class="brand-mark">CD</div><div><div class="brand-title">ClickDrive</div><div class="brand-subtitle">Gestao da autoescola</div></div></div>
+        <nav class="nav-menu">
+            <a class="nav-link" th:href="@{/web/simulados}">Simulados</a>
+            <a class="nav-link" th:href="@{/web/questoes}">Questoes</a>
+            <a class="nav-link active" th:href="@{/web/opcoes}">Opcoes</a>
+            <a class="nav-link" th:href="@{/web/avaliacoes}">Avaliacoes</a>
+            <a class="nav-link" th:href="@{/web/pagamentos}">Pagamentos</a>
+            <a class="nav-link" th:href="@{/web/dicas}">Dicas</a>
+            <a class="nav-link" th:href="@{/web/login}">Login</a>
+        </nav>
+    </aside>
+    <main class="main">
+        <header class="page-header">
+            <div><h1 class="page-title">Opcoes</h1><p class="page-kicker">Veja as alternativas vinculadas a cada questao e qual delas esta marcada como correta.</p></div>
+            <div class="toolbar-badge">Prova objetiva</div>
+        </header>
+
+        <section class="panel">
+            <h2 class="panel-title">Alternativas por questao</h2>
+            <div th:each="questao : ${questoes}" class="question-block">
+                <h3 class="panel-title"><span th:text="${questao.id}">1</span> - <span th:text="${questao.enunciado}">Enunciado</span></h3>
+                <ul class="option-list">
+                    <li class="option-row" th:each="opcao : ${questao.opcoes}">
+                        <span th:text="${opcao.texto}">Alternativa</span>
+                        <span class="status" th:classappend="${opcao.correta} ? ' status-ok' : ''" th:text="${opcao.correta} ? 'Correta' : 'Distrator'">Status</span>
+                    </li>
+                </ul>
+            </div>
+            <div th:if="${#lists.isEmpty(questoes)}" class="empty-state">Nenhuma opcao encontrada. Cadastre uma questao com alternativas.</div>
+            <a class="btn btn-primary" th:href="@{/web/questoes}">Cadastrar opcoes em uma questao</a>
+        </section>
+    </main>
+</div>
+</body>
+</html>

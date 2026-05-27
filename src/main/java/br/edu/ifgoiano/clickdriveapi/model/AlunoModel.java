@@ -1,10 +1,13 @@
 package br.edu.ifgoiano.clickdriveapi.model;
+import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
 import java.time.LocalDate;
 
 @Entity
+@Table(name = "alunos")
+@DiscriminatorValue("ALUNO")
 public class AlunoModel extends UsuarioModel {
 
     private String cpf;

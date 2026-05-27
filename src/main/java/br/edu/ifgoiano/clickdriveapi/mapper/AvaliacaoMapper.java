@@ -3,34 +3,16 @@ package br.edu.ifgoiano.clickdriveapi.mapper;
 import br.edu.ifgoiano.clickdriveapi.dto.AvaliacaoRequestDTO;
 import br.edu.ifgoiano.clickdriveapi.dto.AvaliacaoResponseDTO;
 import br.edu.ifgoiano.clickdriveapi.model.AvaliacaoModel;
-import org.springframework.stereotype.Component;
+import org.mapstruct.Mapper;
 
-@Component
-public class AvaliacaoMapper {
+import java.util.List;
 
-    public AvaliacaoModel toEntity(AvaliacaoRequestDTO dto) {
-        if (dto == null) {
-            return null;
-        }
+@Mapper(componentModel = "spring")
+public interface AvaliacaoMapper {
 
-        AvaliacaoModel avaliacao = new AvaliacaoModel();
-        avaliacao.setId(dto.id());
-        avaliacao.setNota(dto.nota());
-        avaliacao.setComentario(dto.comentario());
-        avaliacao.setAulaId(dto.aulaId());
-        return avaliacao;
-    }
+    AvaliacaoModel toEntity(AvaliacaoRequestDTO dto);
 
-    public AvaliacaoResponseDTO toResponseDTO(AvaliacaoModel entity) {
-        if (entity == null) {
-            return null;
-        }
+    AvaliacaoResponseDTO toResponseDTO(AvaliacaoModel entity);
 
-        return new AvaliacaoResponseDTO(
-                entity.getId(),
-                entity.getNota(),
-                entity.getComentario(),
-                entity.getAulaId()
-        );
-    }
+    List<AvaliacaoResponseDTO> toResponseDTOList(List<AvaliacaoModel> entities);
 }

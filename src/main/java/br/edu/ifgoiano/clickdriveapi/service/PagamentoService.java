@@ -1,5 +1,8 @@
 package br.edu.ifgoiano.clickdriveapi.service;
 
+import br.edu.ifgoiano.clickdriveapi.dto.PagamentoRequestDTO;
+import br.edu.ifgoiano.clickdriveapi.dto.PagamentoResponseDTO;
+import br.edu.ifgoiano.clickdriveapi.mapper.PagamentoMapper;
 import br.edu.ifgoiano.clickdriveapi.model.PagamentoModel;
 import br.edu.ifgoiano.clickdriveapi.model.StatusPagamento;
 import br.edu.ifgoiano.clickdriveapi.repository.PagamentoRepository;
@@ -14,6 +17,15 @@ public class PagamentoService {
 
     @Autowired
     private PagamentoRepository pagamentoRepository;
+
+    @Autowired
+    private PagamentoMapper pagamentoMapper;
+
+    public PagamentoResponseDTO gerarPagamento(PagamentoRequestDTO pagamentoDTO) {
+        PagamentoModel pagamento = pagamentoMapper.toEntity(pagamentoDTO);
+        PagamentoModel novoPagamento = gerarPagamento(pagamento);
+        return pagamentoMapper.toResponseDTO(novoPagamento);
+    }
 
     // --- REGRA 1: GERAR A COBRANÇA ---
     public PagamentoModel gerarPagamento(PagamentoModel pagamento) {
@@ -50,13 +62,26 @@ public class PagamentoService {
         return pagamentoRepository.save(pagamento);
     }
 
+    public PagamentoResponseDTO confirmarPagamentoDTO(Long id) {
+        return pagamentoMapper.toResponseDTO(confirmarPagamento(id));
+    }
+
     // --- BUSCAS ---
     public List<PagamentoModel> listarTodos() {
         return pagamentoRepository.findAll();
     }
 
+    public List<PagamentoResponseDTO> listarTodosDTO() {
+        return pagamentoMapper.toResponseDTOList(listarTodos());
+    }
+
     public PagamentoModel buscarPorAula(Long aulaId) {
         return pagamentoRepository.findByAulaId(aulaId).orElse(null);
+    }
+
+    public PagamentoResponseDTO buscarPorAulaDTO(Long aulaId) {
+        PagamentoModel pagamento = buscarPorAula(aulaId);
+        return pagamento != null ? pagamentoMapper.toResponseDTO(pagamento) : null;
     }
 
 }

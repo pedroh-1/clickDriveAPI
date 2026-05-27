@@ -1,5 +1,6 @@
 package br.edu.ifgoiano.clickdriveapi.controller;
 
+import br.edu.ifgoiano.clickdriveapi.dto.Response.InstrutorResponseDTO;
 import br.edu.ifgoiano.clickdriveapi.model.InstrutorModel;
 import br.edu.ifgoiano.clickdriveapi.service.InstrutorService;
 import org.springframework.http.HttpStatus;
@@ -18,14 +19,18 @@ public class InstrutorController {
         this.instrutorService = instrutorService;
     }
 
-    @PostMapping
+    /*@PostMapping
     public ResponseEntity<InstrutorModel> criarInstrutor(@RequestBody InstrutorModel instrutor){
         return new ResponseEntity<>(instrutorService.salvar(instrutor), HttpStatus.CREATED);
-    }
+    }*/
 
     @GetMapping
-    public ResponseEntity<List<InstrutorModel>> buscarTodosInstrutores(){
-        return ResponseEntity.ok(instrutorService.listaTodos());
+    public ResponseEntity<List<InstrutorResponseDTO>> listarTodos() {
+        List<InstrutorResponseDTO> instrutores = instrutorService.listaTodos()
+                .stream()
+                .map(InstrutorResponseDTO::deEntity)
+                .toList();
+        return ResponseEntity.ok(instrutores);
     }
 
     @GetMapping("/{id}")
@@ -41,9 +46,10 @@ public class InstrutorController {
         return ResponseEntity.ok(instrutorService.update(id, instrutorAtualizado));
     }
 
+    /*
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteInstrutor(@PathVariable Long id){
         instrutorService.deletar(id);
         return ResponseEntity.noContent().build();
-    }
+    }*/
 }

@@ -1,5 +1,7 @@
 package br.edu.ifgoiano.clickdriveapi.service;
 
+import br.edu.ifgoiano.clickdriveapi.dto.SimuladoResponseDTO;
+import br.edu.ifgoiano.clickdriveapi.mapper.SimuladoMapper;
 import br.edu.ifgoiano.clickdriveapi.model.QuestaoModel;
 import br.edu.ifgoiano.clickdriveapi.model.SimuladoModel;
 import br.edu.ifgoiano.clickdriveapi.repository.QuestaoRepository;
@@ -18,6 +20,13 @@ public class SimuladoService {
 
     @Autowired
     private QuestaoRepository questaoRepository;
+
+    @Autowired
+    private SimuladoMapper simuladoMapper;
+
+    public SimuladoResponseDTO gerarSimuladoDTO(Long alunoId) {
+        return simuladoMapper.toResponseDTO(gerarSimulado(alunoId));
+    }
 
     public SimuladoModel gerarSimulado(Long alunoId) {
 
@@ -42,5 +51,14 @@ public class SimuladoService {
 
     public SimuladoModel buscarPorId(Long id) {
         return simuladoRepository.findById(id).orElse(null);
+    }
+
+    public SimuladoResponseDTO buscarPorIdDTO(Long id) {
+        SimuladoModel simulado = buscarPorId(id);
+        return simulado != null ? simuladoMapper.toResponseDTO(simulado) : null;
+    }
+
+    public List<SimuladoResponseDTO> listarTodosDTO() {
+        return simuladoMapper.toResponseDTOList(simuladoRepository.findAll());
     }
 }
